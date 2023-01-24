@@ -6,15 +6,17 @@ import projectRoutes from './routes/projectRoutes';
 import adminRoutes from './routes/adminRoutes'
 import categoryRoutes from './routes/categoryRoutes';
 
+dotenv.config();
 
 const port = process.env.PORT || 5000;
 
-dotenv.config();
+
 await connectDB();
 app.use(express.urlencoded({extended:false}))  //for url encoded 
-app.use(express.json());
+
 
 const app = new express();
+app.use(express.json());
 
 if (process.env.NODE_ENV === "development"){
     app.use(morgan('dev'));
