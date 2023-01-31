@@ -5,12 +5,14 @@ const categorySchema = new Schema({
     
     description : {
         type : String,
-        enum: ['front-end', 'back-end', 'full-stuck'],
+       // enum: ['front-end', 'back-end', 'full-stuck'],
         required : true 
     }
     
 },
-{colletion:"categories"});
+{
+    colletion:"categories"}
+);
 
-const category = model ("category", categorySchema);
+const category = model("category", categorySchema);
 export default category;

@@ -1,7 +1,7 @@
 import categoryModel from "../models/categoryModels.js"
 
 //getall
-export function getAll(req, res, next){
+export async function getAll(req, res, next){
     categoryModel.find({}, (err, response) =>{
     if (err) return next(err);
     res.status(200).send({ success: true, response})     
@@ -11,16 +11,18 @@ export function getAll(req, res, next){
 
 //create
 export async function createcategory(req, res,next){
-const Category= await categoryModel(req.body)
-try{
-    Category.save();
-    const savedCategory = Category;
-    return res.status(200).json({data:savedCategory})
-}catch(err){
-    res.status(400).send({message:err})
-}
+    try{
+    const Category= new categoryModel(req.body)
+    Category.save((error, response) => {
+        if (error) return res.status(500).send(error);
+        res
+          .status(200)
+          .send({ success: true, message: "Category Added Succesfully" });
+      });
+    } catch (e) {
+      return res.status(500).send(e);
+    }
   }
-
 
 //get
 export function getcategory(req, res,next){
@@ -33,9 +35,10 @@ export function getcategory(req, res,next){
 
 
 //update
-export function getupdatecategory(req, res, next){
+export async function getupdatecategory(req, res, next){
     let { id } = req.params
-    categoryModel.findOne({ _id:id}, (err, response) =>{
+    const newCategory=req.body
+    categoryModel.findByIdAndUpdate({ _id:id},newCategory ,(err, response) =>{
     if (err) return next(err);
     res.status(200).send({ success: true, response})     
     })
@@ -45,9 +48,9 @@ export function getupdatecategory(req, res, next){
 //delete
 export function deletecategory(req, res, next){
     let { id } = req.params
-    categoryModel.findOne({ _id:id}, (err, response) =>{
+    categoryModel.findOneAndDelete({ _id:id}, (err) =>{
     if (err) return next(err);
-    res.status(200).send({ success: true, response})     
+    res.status(200).send({ success: true, message:'Category deleted'})     
     })
 }
 
