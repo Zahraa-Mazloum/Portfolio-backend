@@ -17,11 +17,19 @@ const projectSchema = new Schema({
         },
         image:{
             type: String,
+        },
+        category: {
+            type: Schema.Types.ObjectId,
+            ref: 'category'
         }
      
     }, {
         collection: 'projects'
     });
+
+    projectSchema.pre(["find", "findOne"], function() {
+        this.populate(["category"])
+    })
 
 const Project = model('Project',projectSchema);
 export default Project;
