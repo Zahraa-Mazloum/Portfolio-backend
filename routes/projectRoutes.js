@@ -1,7 +1,6 @@
 import express from "express";
 const router = express.Router();
 import projectController from "../controllers/projectController.js";
-// import uploadImage,{deleteImage} from "../middleware/middleware.js"
 import image from "../middleware/middleware.js"
 
 

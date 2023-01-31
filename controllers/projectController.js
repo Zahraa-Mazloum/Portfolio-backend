@@ -57,6 +57,7 @@ export async function getAll(req, res, next) {
   export async function updateProject(req, res, next) {
       const id = req.params.id;
       const newProduct = req.body;
+      console.log(req.body)
       projectModel.findByIdAndUpdate(id, newProduct, {
         new: true,
         runValidators: true,
