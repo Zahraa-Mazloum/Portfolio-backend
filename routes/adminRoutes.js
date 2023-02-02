@@ -1,6 +1,5 @@
 import express from 'express';
 import {loginAdmin,registerAdmin, getMe,protect,logoutAdmin,forgotPassword,resetPassword,changePassword} from '../controllers/adminController.js';
-//import {protect} from '../middleware/authMiddleware.js'
 
 
 export const router = express.Router()

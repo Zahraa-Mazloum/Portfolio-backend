@@ -71,7 +71,7 @@ export const loginAdmin = asyncHandler(async (req, res) => {
     const token = jwt.sign({ id: adminExists._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 
 
-    res.cookie(String(adminExists._id), token, {
+    res.cookie("auth-token", token, {
         path: '/',
         expires: new Date(Date.now() + (1000 * 60 * 60 * 24 * 30)),
         httpOnly: true,
@@ -123,22 +123,23 @@ export const getMe = asyncHandler(async (req, res) => {
 
 //logout
 export const logoutAdmin = asyncHandler(async (req, res, next) => {
-    const cookies = req.headers.cookie;
-    const deleteCookie = cookies.split('=')[1]
-    if (!deleteCookie) {
-        return res.status(400).json({ message: 'Token not found' })
-    }
-    jwt.verify(String(deleteCookie), process.env.JWT_SECRET, (err, admin) => {
+    const cookie = req.cookies["auth-token"];
+    console.log(cookie)
+    
+    jwt.verify(cookie, process.env.JWT_SECRET, (err, admin) => {
         if (err) {
             console.log(err);
             return res.status(403).json({ message: "Authentication failed" })
         }
         res.clearCookie(`${admin.id}`)
-        req.cookies[`${admin.id}`] = "";
+        // req.cookies[`${admin.id}`] = "";
         return res.status(200).json({ message: 'Successfuly logged out' })
     }
     )
 })
+
+
+//forgot Password
 
 export const forgotPassword = asyncHandler(async (req, res) => {
     const { email } = req.body;
