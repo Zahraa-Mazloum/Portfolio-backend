@@ -28,7 +28,7 @@ export const registerAdmin = asyncHandler(async (req, res) => {
     //create admin 
     const admin = await Admin.create({
         email,
-        password: hashedPassword,
+        password:hashedPassword,
     })
 
     if (admin) {
@@ -154,7 +154,7 @@ export const forgotPassword = asyncHandler(async (req, res) => {
         }
         const secret = process.env.JWT_SECRET + adminExists.password;
         const token = jwt.sign({ email: adminExists.email, id: adminExists.id }, secret, { expiresIn: "24h" });
-        const link = `http://localhost:${process.env.PORT}/api/admin/resetPassword/${adminExists._id}/${token}`;
+        const link = `http://localhost:3000/changepass/${adminExists._id}/${token}`;
         console.log(link)
 
         const data = {
@@ -168,11 +168,10 @@ export const forgotPassword = asyncHandler(async (req, res) => {
             if (error) {
             console.log(error);}
             else 
-            console.log('sent')
+            return res.send('Link sent to your email')
         });
 
 
-        return res.send(link)
 
     }
     catch (err) {
@@ -196,7 +195,7 @@ export const resetPassword = asyncHandler(async (req, res) => {
         res.send('Not verified')
     }
 })
- 
+    
 
 export const changePassword = asyncHandler(async (req, res) => {
     try {
@@ -215,4 +214,4 @@ export const changePassword = asyncHandler(async (req, res) => {
       }
     });
 const adminRoutes = { loginAdmin, getMe, registerAdmin, logoutAdmin, protect, forgotPassword, resetPassword, changePassword }
-export default adminRoutes
+export default adminRoutes  
